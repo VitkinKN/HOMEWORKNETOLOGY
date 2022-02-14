@@ -57,7 +57,7 @@ for result in result_os.split('\n'):
                     print(prepare_result)
 ```
 ##### Вывод скрипта при запуске при тестировании:
-[](IMAGES/1.jpeg )
+![](IMAGES/2.jpg )
 ```
 ```
 
