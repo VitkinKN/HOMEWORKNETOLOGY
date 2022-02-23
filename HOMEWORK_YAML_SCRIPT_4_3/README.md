@@ -38,19 +38,48 @@
 
 ##### Мой скрипт:
 ```python
-???
+import socket # импорт библиотеки для определения ip по запросу
+import time # импорт библиотеки для возможности создания задержки в работе файла
+import os  # импорт библиотеки для возможности для проверки наличия и создания файла в директории
+import json # импорт библиотеки для возможности работы с json файлами
+import yaml # импорт библиотеки для возможности работы с yaml файлами
+numer = 1 # cоздание счётчика при создании конечного или бесконечного цикла
+regal = {'github.com': '', 'mail.google.com': ' ', 'google.com': ' '} словарь с нашими сервисами
+if not os.path.isfile('pars.json'): 
+    serv_json = open("pars.json", "w+")
+if not os.path.isfile('pars.yaml'):
+    serv_yaml = open("pars.yaml", "w+")   # если файлов нет то создаём их
+while numer == 1:  # открываем бесконечный цикл
+    for server in regal: # открываем цикл для каждого сервиса в списке
+        ip_server = socket.gethostbyname(server) # находим ip сервиса
+        if ip_server in regal[server]: # открываем вложенный цикл для проверки ip в словаре
+            print(server + ' - ' + ip_server) # если есть то просто выводим на экран
+            del regal[server] # если есть удаляем предидущую запись в словаре
+            regal[server] =  ip_server # добавляем новую запись в словаре
+        else:
+            print('ERROR ' +  server + ' IP mismatch: ' + regal[server] +' ' + ip_server)
+            del regal[server] # если нет удаляем предидущую запись в словаре
+            regal[server] =  ip_server # добавляем новую запись в словаре
+            with open('pars.json', 'w') as outfile: # открываем файл на ввод в него
+                for server in regal: # для каждого в словаре 
+                    json.dump({server : regal[server]}, outfile) # делаем запись в json файл
+            with open('pars.yaml', 'w') as outfile1: # открываем файл на ввод в него
+                yaml.dump(regal, outfile1, default_flow_style=False) # делаем запись в yaml файл
+    time.sleep(1) # задержка цикла
 ```
 ##### Вывод скрипта при запуске при тестировании:
-```
-???
-```
+
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/6.JPG )
+
 #### json-файлы, которые записал мой скрипт:
 ```json
-???
+{"github.com": "140.82.121.3"}{"mail.google.com": "64.233.163.18"}{"google.com": "173.194.222.139"}
 ```
 #### yml-файлы, которые записал мой скрипт:
 ```yaml
-???
+github.com: 140.82.121.3
+google.com: 173.194.222.139
+mail.google.com: 64.233.163.18
 ```
 
 
