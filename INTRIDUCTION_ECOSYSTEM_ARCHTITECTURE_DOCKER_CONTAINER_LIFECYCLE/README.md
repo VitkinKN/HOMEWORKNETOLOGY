@@ -132,7 +132,7 @@ konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker exec -it 2d
 [root@2d046ff54b83 data]# exit
 exit
 ```
-- *С хостовой машины в папке /data создаем файл Second_file, заходим в контейнер debian и смотрим что у нас в папке ./data
+- *С хостовой машины в папке /data создаем файл Second_file, заходим в контейнер debian и смотрим что у нас в папке ./data*
 ```
 konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ cd data
 konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3/data $ touch Second_file.txt
