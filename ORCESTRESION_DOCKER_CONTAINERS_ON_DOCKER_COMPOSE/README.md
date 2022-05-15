@@ -175,7 +175,7 @@ done (3s)
 
 - *Делаем конфигурацию терраформ для облака в файлах*
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/terraform $ nano 
+konstantin@konstantin-forever ~/DEVOPS_COURSE/05-virt-04-docker-compose/src/ansible $ 
 # Provider
 terraform {
   required_providers {
