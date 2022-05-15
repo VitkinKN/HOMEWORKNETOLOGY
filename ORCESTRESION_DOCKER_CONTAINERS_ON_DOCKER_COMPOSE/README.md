@@ -1,147 +1,316 @@
 # INTRIDUCTION_ECOSYSTEM_ARCHTITECTURE_DOCKER_CONTAINER_LIFECYCLE_5_3_(VITKIN_K_N)
 
-### 1. Cоздаём свой репозиторий на https://hub.docker.com; выбераем любой образ, который содержит веб-сервер Nginx; создаём свой fork образа:
-- *Выбираем образ nginx, загружаем его и запускаем*
+### 1. Создать собственный образ операционной системы с помощью Packer.
+- *Устанавливаем Packer (пришлось ставить с не официального ресурса через vpn*
 ```
-konstantin@konstantin-forever ~ $ sudo docker run -d -p 192.168.0.102:8080:80 nginx
-Unable to find image 'nginx:latest' locally
-latest: Pulling from library/nginx
-1fe172e4850f: Pull complete
-35c195f487df: Pull complete
-213b9b16f495: Pull complete
-a8172d9e19b9: Pull complete
-f5eee2cb2150: Pull complete
-93e404ba8667: Pull complete
-Digest: sha256:859ab6768a6f26a79bc42b231664111317d095a4f04e4b6fe79ce37b3d199097
-Status: Downloaded newer image for nginx:latest
-5b856e23432865c089efc0ddc97be4d82780401b9fcdade4fb4de02b35696466
+kkonstantin@konstantin-forever ~/DEVOPS_COURSE/HOMEWORKNETOLOGY $ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+OK
+konstantin@konstantin-forever ~/DEVOPS_COURSE/HOMEWORKNETOLOGY $ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+konstantin@konstantin-forever ~/DEVOPS_COURSE/HOMEWORKNETOLOGY $ sudo apt-get update && sudo apt-get install packer
+konstantin@konstantin-forever ~/DEVOPS_COURSE/HOMEWORKNETOLOGY $ packer -v
+1.8.0
+```
+- *Coздаём файл конфигурации MY_OS_PACKER.pkr.hcl для нашей новой и прописываем конфигурацию*
 
 ```
-- *Смотрим в браузере работу контейнера*
-![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/9.png )
+packer {
+  required_plugins {
+    docker = {
+      version = ">= 0.0.7"
+      source = "github.com/hashicorp/docker"
+    }
+  }
+}
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ nano index.html
-- *Делаем html - страничку и копирем ее в наш контейнер.*
-```
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ nano index.html
-<html>
-	        <head>
-	                Hey, Netology
-	        </head>
-	<body>
-	        <h1>I am DevOps Engineer!</h1>
-	</body>
-	</html>
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ sudo docker cp index.html 5b856e234328:/usr/share/nginx/html/
-```
-- *Cмотрим в браузере работу контейнера - как отображается наша страничка*
--
-![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/8.png )
+source "docker" "ubuntu" {
+  image  = "ubuntu"
+  commit = true
+}
 
-- *Логинимся через командную строку на hub.docker (перименуем в удобочитаемую форму на image) и пушим в заранее созданный репозитории наш модифицированный image*
+build {
+  name    = "MY_VM-packer"
+  sources = [
+    "source.docker.ubuntu"
+  ]
+}
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ sudo docker login docker.io
-[sudo] пароль для konstantin:
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: vitkinkon
-Password:
+- *Инициируем файл конфигурации и проверяем правильность работы файла*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/PACKER_VM1 $ packer init MY_OS_PACKER.pkr.hcl
+Installed plugin github.com/hashicorp/docker v1.0.3 in "/home/konstantin/.config/packer/plugins/github.com/hashicorp/docker/packer-plugin-docker_v1.0.3_x5.0_linux_amd64"
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/PACKER_VM1 $ packer validate MY_OS_PACKER.pkr.hcl
+The configuration is valid.
+```
+- *Создаём наш образ Ubuntu-Docker*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/PACKER_VM1 $ sudo docker login docker.io 
+[sudo] пароль для konstantin: 
+Authenticating with existing credentials...
 WARNING! Your password will be stored unencrypted in /home/konstantin/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
 Login Succeeded
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ sudo docker tag nginx vitkinkon/netology:5_3_task
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/PACKER_VM1 $ sudo packer build  MY_OS_PACKER.pkr.hcl
+learn-packer.docker.ubuntu: output will be in this color.
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE $ sudo docker push vitkinkon/netology:5_3_task
-The push refers to repository [docker.io/vitkinkon/netology]
-b6812e8d56d6: Mounted from library/nginx
-7046505147d7: Mounted from library/nginx
-c876aa251c80: Mounted from library/nginx
-f5ab86d69014: Mounted from library/nginx
-4b7fffa0f0a4: Mounted from library/nginx
-9c1b6dd6c1e6: Mounted from library/nginx
-5_3_task: digest: sha256:61face6bf030edce7ef6d7dd66fe452298d6f5f7ce032afdd01683ef02b2b841 size: 1570
+==> learn-packer.docker.ubuntu: Creating a temporary directory for sharing data...
+==> learn-packer.docker.ubuntu: Pulling Docker image: ubuntu
+    learn-packer.docker.ubuntu: Using default tag: latest
+    learn-packer.docker.ubuntu: latest: Pulling from library/ubuntu
+    learn-packer.docker.ubuntu: 125a6e411906: Pulling fs layer
+    learn-packer.docker.ubuntu: 125a6e411906: Download complete
+    learn-packer.docker.ubuntu: 125a6e411906: Pull complete
+    learn-packer.docker.ubuntu: Digest: sha256:26c68657ccce2cb0a31b330cb0be2b5e108d467f641c62e13ab40cbec258c68d
+    learn-packer.docker.ubuntu: Status: Downloaded newer image for ubuntu:latest
+==> learn-packer.docker.ubuntu: Starting docker container...
+    learn-packer.docker.ubuntu: Run command: docker run -v /home/konstantin/.config/packer/tmp4072817532:/packer-files -d -i -t --entrypoint=/bin/sh -- ubuntu
+    learn-packer.docker.ubuntu: Container ID: 7ccfd7434ba7df0f005be5decc04622fcde019dd510bcde42538c34c980b3ac6
+==> learn-packer.docker.ubuntu: Using docker communicator to connect: 172.17.0.2
+==> learn-packer.docker.ubuntu: Committing the container
+    learn-packer.docker.ubuntu: Image ID: sha256:4baea1da856d8bb4da622d629c5546da4db270d348a095a7dbe6630e2b8a2d99
+==> learn-packer.docker.ubuntu: Killing the container: 7ccfd7434ba7df0f005be5decc04622fcde019dd510bcde42538c34c980b3ac6
+Build 'learn-packer.docker.ubuntu' finished after 47 seconds 471 milliseconds.
+
+==> Wait completed after 47 seconds 471 milliseconds
+
+==> Builds finished. The artifacts of successful builds are:
+--> learn-packer.docker.ubuntu: Imported Docker image: sha256:4baea1da856d8bb4da622d629c5546da4db270d348a095a7dbe6630e2b8a2d99
 ```
-##### *Ccылка на наш image:*
-###### [Image in Hub.docker.com](https://hub.docker.com/layers/210207984/vitkinkon/netology/5_3_task/images/sha256-61face6bf030edce7ef6d7dd66fe452298d6f5f7ce032afdd01683ef02b2b841?context=repo&tab=layers )
-___
-### 2.Посмотрите на сценарий ниже и ответьте на вопрос: "Подходит ли в этом сценарии использование Docker контейнеров или лучше подойдет виртуальная машина, физическая машина? Может быть возможны разные варианты?"
-- *Высоконагруженное монолитное java веб-приложение;*
-###### *Подойдут все три варианта, так как каждый вариант в своей мере справляется с рабочими нагрузками, конечно лучше упаковать приложение в контейнер(в задании нет требований к системе OS), сложно сказать для чего помещать подобного рода приложения в виртуалку - на мой взгляд она хуже справится с данной функцией(из-за доп процессов при виртуализации). Физ сервер может быть лучше всего подходит под данный вариант.*
-- *Nodejs веб-приложение;*
-###### *Данный сценарий лучше всего подходит для docker, также неплохо размерстить на виртуальной машине, можно и на физическом сервере если высоки требования к отказоустойчивости и безопасности*
-- *Мобильное приложение c версиями для Android и iOS;*
-###### *На данные сценарий больше подходит вируальные машины с разными операционными системами*
-- *Шина данных на базе Apache Kafka;*
-###### *Если используется Apache Kafka вероятно высоки требования в надёжности и отказоустойчивости что возможно на физическом сервере, а также система типа docker - compose c высокими параметрами быстродействия и надёжности*
-- *Elasticsearch кластер для реализации логирования продуктивного веб-приложения - три ноды elasticsearch, два logstash и две ноды kibana;*
-###### *Данный сценарий лучше всего подходит для docker*
-- *Мониторинг-стек на базе Prometheus и Grafana;*
-###### *Данный сценарий лучше всего подходит для docker*
-- *MongoDB, как основное хранилище данных для java-приложения;*
-###### *Данный сценарий лучше всего подходит для docker и физического сервера*
-- *Gitlab сервер для реализации CI/CD процессов и приватный (закрытый) Docker Registry.*
-###### *Данный сценарий подходит для всех вариантов*
+
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/10.png )
 
 ___
+### *2. Создадим виртуальную машину в Яндекс.Облаке.*
 
-### *3.Запустите первый контейнер из образа centos c любым тэгом в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера; Запустите второй контейнер из образа debian в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера; Подключитесь к первому контейнеру с помощью docker exec и создайте текстовый файл любого содержания в /data; Добавьте еще один файл в папку /data на хостовой машине; подключитесь во второй контейнер и отобразите листинг и содержание файлов в /data контейнера..*
+##### *Получили токен установили утилиту ус и настроили доступ к нашему облаку*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/PACKER_VM1 $ curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  9739  100  9739    0     0  20283      0 --:--:-- --:--:-- --:--:-- 20289
+Downloading yc 0.90.0
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 83.5M  100 83.5M    0     0  9673k      0  0:00:08  0:00:08 --:--:-- 10.8M
+Yandex Cloud CLI 0.90.0 linux/amd64
+
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ yc init
+Welcome! This command will take you through the configuration process.
+Pick desired action:
+ [1] Re-initialize this profile 'netology' with new settings 
+ [2] Create a new profile
+ [3] Switch to and re-initialize existing profile: 'default'
+ [4] Switch to and re-initialize existing profile: 'netlog'
+ [5] Switch to and re-initialize existing profile: 'neto'
+Please enter your numeric choice: 1
+Please go to https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb in order to obtain OAuth token.
+
+Please enter OAuth token: [AQAAAAAKR*********************ik4zSfY9M] AQAAAAAKRmttAATuwRK4ViENv0tRhxik4zSfY9M
+You have one cloud available: 'cloud-net-vitkinkn' (id = b1gjj00oe6mlvmeoj0h6). It is going to be used by default.
+Please choose folder to use:
+ [1] default (id = b1gkroi916atvgla1522)
+ [2] netology (id = b1g3r78e9ad9be8bcmdr)
+ [3] Create a new folder
+Please enter your numeric choice: 2
+Your current folder has been set to 'netology' (id = b1g3r78e9ad9be8bcmdr).
+Do you want to configure a default Compute zone? [Y/n] y
+Which zone do you want to use as a profile default?
+ [1] ru-central1-a
+ [2] ru-central1-b
+ [3] ru-central1-c
+ [4] Don't set default zone
+Please enter your numeric choice: 1
+Your profile default Compute zone has been set to 'ru-central1-a'.
+
+
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ yc vpc network create --name net --labels label=netology --description 'created via yc'
+id: enpqvflqel7lmp8pnue5
+folder_id: b1g3r78e9ad9be8bcmdr
+created_at: "2022-05-15T11:17:52Z"
+name: net
+description: created via yc
+labels:
+  label: netology
+
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ yc vpc subnet create --name subnet --zone ru-central1-a --range 10.1.2.0/24 --network-name net --description 'created via yc'
+id: e9b6oq6q813i4dk8av9q
+folder_id: b1g3r78e9ad9be8bcmdr
+created_at: "2022-05-15T11:18:31Z"
+name: subnet
+description: created via yc
+network_id: enpqvflqel7lmp8pnue5
+zone_id: ru-central1-a
+v4_cidr_blocks:
+- 10.1.2.0/24
+
 
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ mkdir data
+##### *Настроим наш json файл: folder id, subnet_id, token.*
+##### *Также запустим постройку нашего образа в облаке*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ packer validate centos-7-base.json
+The configuration is valid.
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker pull centos
-[sudo] пароль для konstantin:
-Using default tag: latest
-latest: Pulling from library/centos
-a1d0c7532777: Pull complete
-Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
-Status: Downloaded newer image for centos:latest
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ packer build centos-7-base.json
+yandex: output will be in this color.
+==> yandex: Creating temporary RSA SSH key for instance...
+==> yandex: Using as source image: fd8v9fc454c44fr6lngi (name: "centos-7-v20220314", family: "centos-7")
+...
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker pull debian
-Using default tag: latest
-latest: Pulling from library/debian
-6aefca2dc61d: Pull complete
-Digest: sha256:6846593d7d8613e5dcc68c8f7d8b8e3179c7f3397b84a47c5b2ce989ef1075a0
-Status: Downloaded newer image for debian:latest
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/packer $ yc compute image list
++----------------------+---------------+--------+----------------------+--------+
+|          ID          |     NAME      | FAMILY |     PRODUCT IDS      | STATUS |
++----------------------+---------------+--------+----------------------+--------+
+| fd8fphmm1jud0338snf9 | centos-7-base | centos | f2esd9f5o5i9p7pkkk8k | READY  |
++----------------------+---------------+--------+----------------------+--------+
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker image ls
-REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-debian               latest              a11311205db1        2 weeks ago         124MB
-centos               latest              5d0da3dc9764        7 months ago        231MB
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4 $ yc vpc subnet delete --name subnet && yc vpc network delete --name net
+done (3s)
+```
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/11.png )
+
+##### *Настроим терраформ*
+
+- *Делаем конфигурацию терраформ для облака в файлах*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/terraform $ nano 
+# Provider
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+}
+provider "yandex" {
+  token     = "AQAAAAAKRmttAATuwRK4ViENv0tRhxik4zSfY9M"
+  cloud_id  = "b1gjj00oe6mlvmeoj0h6"
+  folder_id = "b1g3r78e9ad9be8bcmdr"
+}
+```
+```
+# Network
+resource "yandex_vpc_network" "default" {
+  name = "net"
+}
+
+resource "yandex_vpc_subnet" "default" {
+  name = "subnet"
+  zone           = "ru-central1-a"
+  network_id     = "enp84akg6umv6ofhfk6c"
+  v4_cidr_blocks = ["192.168.101.0/24"]
+}
+```
 
 ```
-- *Запускаем контейнеры и подключаем папку data к папке контейнера /data (для этого используем простой процесс sleep*
+#node01
+resource "yandex_compute_instance" "node01" {
+  name                      = "node01"
+  zone                      = "ru-central1-a"
+  hostname                  = "node01.netology.cloud"
+  allow_stopping_for_update = true
+  resources {
+    cores  = 8
+    memory = 8
+  }
+  boot_disk {
+    initialize_params {
+      image_id    = "${var.centos-7-base}"
+      name        = "root-node01"
+      type        = "network-nvme"
+      size        = "50"
+    }
+  }
+  network_interface {
+    subnet_id = "e9br08ja7i5nn9niqtt1"
+    nat       = true
+  }
+  metadata = {
+    ssh-keys = "centos:${file("~/.ssh/id_rsa.pub")}"
+  }
+}
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker run -d -v /home/konstantin/DEVOPS_COURSE/TASK_5_3/data:/data debian sleep 1000
-bc2a75f7b13504eaacda2d9728beba94e101bd2600fe87fccf7d837b513fa95e
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker run -d -v /home/konstantin/DEVOPS_COURSEK_5_3/data:/data centos sleep 1000
-2d046ff54b832f9f08d0115bf40b0b1dbb3d548e9706597f157445b54a4e8c21
+```
+# variable
 
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-2d046ff54b83        centos              "sleep 1000"        41 seconds ago      Up 39 seconds                           competent_rosalind
-bc2a75f7b135        debian              "sleep 1000"        52 seconds ago      Up 50 seconds                           epic_goodall
+variable "yandex_cloud_id" {
+  default = "b1gjj00oe6mlvmeoj0h6"
+}
+
+variable "yandex_folder_id" {
+  default = "b1g3r78e9ad9be8bcmdr"
+}
+
+variable "centos-7-base" {
+  default = "fd8fphmm1jud0338snf9"
+}
 ```
-- *Заходим в контейнер сenos контейнер и создаем там файл  first_file*
+- *Инициируем терраформ, проверяем конфигурацию и создаём виртуальную машину*
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker exec -it 2d046ff54b83 /bin/bash
-[root@2d046ff54b83 /]#  cd /data
-[root@2d046ff54b83 data]# echo Hey_DevOps > first_file.txt
-[root@2d046ff54b83 data]# exit
-exit
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/terraform $ terraform init
+...
+Terraform has been successfully initialized!
+
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/terraform $ terraform validate
+Success! The configuration is valid.
+
+konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_4/terraform $ terraform apply
+...
+  Enter a value: yes
+yandex_vpc_subnet.default: Creating...
+yandex_vpc_network.default: Creating...
+yandex_compute_instance.node01: Creating...
+yandex_vpc_subnet.default: Creation complete after 7s [id=e9b5v2a42mkgef9296o9]
+yandex_vpc_network.default: Creation complete after 7s [id=enpi7i7u5gstejpno2i5]
+yandex_compute_instance.node01: Still creating... [10s elapsed]
+yandex_compute_instance.node01: Still creating... [20s elapsed]
+yandex_compute_instance.node01: Still creating... [30s elapsed]
+yandex_compute_instance.node01: Still creating... [40s elapsed]
+yandex_compute_instance.node01: Creation complete after 47s [id=fhmt7mheej4pkivvuqov]
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+Outputs:
+external_ip_address_node01_yandex_cloud = "51.250.89.121"
+internal_ip_address_node01_yandex_cloud = "10.128.0.14"
+
 ```
-- *С хостовой машины в папке /data создаем файл Second_file, заходим в контейнер debian и смотрим что у нас в папке ./data*
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/12.png )
+___
+
+### *3. Создаём готовый к боевой эксплуатации компонент мониторинга, состоящий из стека микросервисов.*
 ```
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ cd data
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3/data $ touch Second_file.txt
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3/data $ cd ..
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $ sudo docker exec -it bc2a75f7b135 /bin/bash
-root@bc2a75f7b135:/# cd /data
-root@bc2a75f7b135:/data# ls
-Second_file.txt  first_file.txt
-root@bc2a75f7b135:/data# exit
-exit
-konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_3 $
+[nodes:children]
+manager
+[manager]
+node01.netology.cloud ansible_host=51.250.89.121
 ```
+- *Запускаем ansible-playbook - строим наш сервис*
+```
+konstantin@konstantin-forever ~/DEVOPS_COURSE/05-virt-04-docker-compose/src/ansible $ ansible-playbook -i inventory provision.yml
+ ______________
+< PLAY [nodes] >
+ --------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+ ________________________
+< TASK [Gathering Facts] >
+ ------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+The authenticity of host '51.250.89.121 (51.250.89.121)' can't be established.
+ECDSA key fingerprint is SHA256:b/VU+JsCi5c84bwAIPm3z1EoNAZzwZ3je25Wsx7/Tn4.
+Are you sure you want to continue connecting (yes/no)? yes
+...
+```
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/13.png )
+
