@@ -1,4 +1,4 @@
-# INTRIDUCTION_ECOSYSTEM_ARCHTITECTURE_DOCKER_CONTAINER_LIFECYCLE_5_3_(VITKIN_K_N)
+# ORCESTRESION_DOCKER_CONTAINERS_ON_DOCKER_COMPOSE_5_4_(VITKIN_K_N)
 
 ### 1. Создать собственный образ операционной системы с помощью Packer.
 - *Устанавливаем Packer (пришлось ставить с не официального ресурса через vpn*
