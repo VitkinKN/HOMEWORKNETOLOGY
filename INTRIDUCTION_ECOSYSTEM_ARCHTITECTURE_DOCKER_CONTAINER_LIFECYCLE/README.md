@@ -1,4 +1,4 @@
-# INTRIDUCTION_ECOSYSTEM_ARCHTITECTURE_DOCKER_CONTAINER_LIFECYCLE_5_4_(VITKIN_K_N)
+# INTRIDUCTION_ECOSYSTEM_ARCHTITECTURE_DOCKER_CONTAINER_LIFECYCLE_5_3_(VITKIN_K_N)
 
 ### 1. Cоздаём свой репозиторий на https://hub.docker.com; выбераем любой образ, который содержит веб-сервер Nginx; создаём свой fork образа:
 - *Выбираем образ nginx, загружаем его и запускаем*
