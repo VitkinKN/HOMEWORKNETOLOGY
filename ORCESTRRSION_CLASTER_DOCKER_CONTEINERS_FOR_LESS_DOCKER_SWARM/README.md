@@ -29,7 +29,6 @@ Profile 'my-robot-profile' created and activated
 konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_5_5/terraform $ yc config set service-account-key key.json
 ```
 - *Настроим наш json файл: folder id, subnet_id, key..*
-- *Также запустим постройку нашего образа в облаке*
 
 ##### *Настроим терраформ*
 
