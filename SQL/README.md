@@ -195,4 +195,4 @@ postgres=# SELECT * FROM clients;
   3 | Иоганн Себастьян Бах | Japan             |     5
 (5 rows)
 ```
-[](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/19.png )
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/19.png )
