@@ -111,11 +111,6 @@ mysql> select * from INFORMATION_SCHEMA.USER_ATTRIBUTEs where user = 'test';
 +------+-----------+---------------------------------------+
 1 row in set (0.00 sec)
 ```
-- *предоставьте пользователю test-simple-user права на SELECT/INSERT/UPDATE/DELETE данных таблиц БД test_db*
-```
-postgres=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA "public" TO test_simple_user;
-GRANT
-```
 ___
 
 
@@ -193,4 +188,5 @@ innodb_buffer_pool_size = 4800M
 innodb_file_per_table ON
 innodb_file_format = Barracuda
 ```
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/20.png )
 ___
