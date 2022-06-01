@@ -15,7 +15,7 @@ $ sudo docker run --rm --name pgadmin -e POSTGRES_PASSWORD=admin -ti -p 5432:543
 ```
 konstantin@konstantin-forever ~ $ sudo docker exec -it pgadmin bash
 [sudo] пароль для konstantin: 
-root@9fe4b892100f:/# psql -h localhost -p 5432 -U postgres -W
+root@9fe4b892100f:/# psql --username=postgres --dbname=postgres
 Password: 
 psql (13.7 (Debian 13.7-1.pgdg110+1))
 Type "help" for help.
@@ -56,8 +56,11 @@ es
 ```
 - *Вывод списка таблиц* 
 ```
-postgres=# \dt
-Did not find any relations.
+postgres=# \dtS
+..
+ pg_catalog | pg_namespace            | table | postgres
+ pg_catalog | pg_opclass              | table | postgres
+ ..
 ```
 - *Выхода из psql*
 ```
@@ -163,7 +166,7 @@ test_database=#
 ```
 postgres=# pg_dump -d test_database > /tmp/test_db_dump.sql
 ```
-Ограничения уникальности. Первичные ключи.
+- *Ограничения уникальности. Первичные ключи.*
 ```
 CREATE index IN orders (index integer, UNIQUE);
 CREATE index IN orders (index integer, PRIMARY KEY);
