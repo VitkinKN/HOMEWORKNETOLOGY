@@ -16,7 +16,7 @@ CMD $HOME/$JOB_DIRECT/bin/elasticsearch
 ```
 
 - *Cоберите docker-образ и сделайте push в ваш docker.io репозиторий*
-![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/21.jpg )
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/21.JPG )
 
 ```
 konstantin@konstantin-forever ~/DEVOPS_COURSE/TASK_6_5_ $ sudo docker tag c046d5507c92 vitkinkon/netology:CentOS_Elastic
