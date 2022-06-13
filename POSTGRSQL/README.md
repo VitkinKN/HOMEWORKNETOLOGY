@@ -112,7 +112,7 @@ ALTER TABLE
 ```
 - *Подклюаемся к восстановленной БД и проведим операцию ANALYZE для сбора статистики по таблице.*
 ```
-postgres-# \c test_database
+postgres-# \l test_database
 Password: 
 You are now connected to database "test_database" as user "postgres".
 test_database=# ANALYZE VERBOSE;
