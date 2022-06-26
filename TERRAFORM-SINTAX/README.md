@@ -72,7 +72,7 @@ resource "yandex_compute_instance" "vm" {
 }
 
 ```
-![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/22.png )
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/24.png )
 - *при помощи какого инструмента (из разобранных на прошлом занятии) можно создать свой образ ami?*
 ###### *При помощи инструмента Packer*
 [Ccылка на репозиторий с исходной конфигурацией терраформа.](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/TERRAFORM-SINTAX/main.tf )
