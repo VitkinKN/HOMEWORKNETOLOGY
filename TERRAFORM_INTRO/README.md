@@ -38,12 +38,12 @@ konstantin@konstantin-forever ~ $ sudo apt-add-repository "deb [arch=amd64] http
 konstantin@konstantin-forever ~ $ sudo apt-get update && sudo apt-get install terraform
 Сущ:1 http://archive.ubuntu.com/ubuntu xenial InRelease                        
 Сущ:2 http://archive.canonical.com/ubuntu xenial InRelease 
+...
+konstantin@konstantin-forever /usr/local/tf/12 $ sudo rm /usr/bin/terraform && sudo cp /home/konstantin/Загрузки/terraform /usr/bin/
 
-konstantin@konstantin-forever ~ $ terraform --version
-Terraform v1.1.9
+konstantin@konstantin-forever /usr/local/tf/12 $ terraform --version
+Terraform v1.2.3
 on linux_amd64
-Your version of Terraform is out of date! The latest version
-is 1.2.3. You can update by downloading from https://www.terraform.io/downloads.html
 ...
 ```
 
@@ -76,10 +76,8 @@ Terraform v0.12.20
 Your version of Terraform is out of date! The latest version
 is 1.2.3. You can update by downloading from https://www.terraform.io/downloads.html
 konstantin@konstantin-forever /usr/local/tf/12 $ terraform --version
-Terraform v1.1.9
+konstantin@konstantin-forever /usr/local/tf/12 $ terraform --version
+Terraform v1.2.3
 on linux_amd64
-
-Your version of Terraform is out of date! The latest version
-is 1.2.3. You can update by downloading from https://www.terraform.io/downloads.html
 ```
 ___
