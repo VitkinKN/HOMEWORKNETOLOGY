@@ -9,7 +9,7 @@
 ___
 ### 2. Создание aws ec2 или yandex_compute_instance через терраформ.
 
-```json
+```
 terraform {
   required_providers {
     yandex = {
@@ -34,6 +34,6 @@ resource yandex_compute_image ubu-img {
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/22.png )
 - *при помощи какого инструмента (из разобранных на прошлом занятии) можно создать свой образ ami?*
 ###### *При помощи инструмента Packer*
-[Ccылка на репозиторий с исходной конфигурацией терраформа.](https://github.com/VitkinKN/HOMEWORKNETOLOGY/TERRAFORM-SINTAX/main.tf )
+[Ccылка на репозиторий с исходной конфигурацией терраформа.](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/TERRAFORM-SINTAX/main.tf )
 
 ___
