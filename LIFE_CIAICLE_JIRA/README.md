@@ -20,6 +20,7 @@ ___
 - *Создать задачу с типом epic, к ней привязать несколько задач с типом task, провести их по всему workflow до Done.*
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/32.png )
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/33.png )
+![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/35.png )
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/34.png )
 
 ![Выгрузим схемы workflow для импорта в XML. Файлы с workflow приложим к решению задания](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/LIFE_CIAICLE_JIRA/MNP-1.xml)
