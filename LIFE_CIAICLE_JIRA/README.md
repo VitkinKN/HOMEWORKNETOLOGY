@@ -22,6 +22,6 @@ ___
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/33.png )
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/34.png )
 
-
-
+![Выгрузим схемы workflow для импорта в XML. Файлы с workflow приложим к решению задания](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/LIFE_CIAICLE_JIRA/MNP-1.xml)
+![Выгрузим схемы workflow для импорта в XML. Файлы с workflow приложим к решению задания](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/LIFE_CIAICLE_JIRA/MNP-2.xml)
 ___
