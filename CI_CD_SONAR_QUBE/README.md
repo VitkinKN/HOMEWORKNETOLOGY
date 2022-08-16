@@ -137,7 +137,7 @@ bash-4.4$ cat nexus-data/admin.password
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/39.png )
 - *В него же загружаем такой же артефакт, но с version: 8_102*
 ![](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/IMAGES/40.png )
-![Файл maven-metadata.xml для артефекта в XML.](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/CI_CD_SONAR_QUBE/example/maven-metadata.xml)
+![Файл maven-metadata.xml для артефекта в XML.](https://github.com/VitkinKN/HOMEWORKNETOLOGY/blob/master/CI_CD_SONAR_QUBE/example/fail.py)
 - *Разархивируем, делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)*
 - *Проверяем mvn --version*
 ```
